@@ -7,8 +7,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 # Configuration - Use Environment Variables for Security
-USERNAME = os.environ.get("LEME_EMAIL", "your_email@example.com")
-PASSWORD = os.environ.get("LEME_PASSWORD", "your_password")
+USERNAME = os.environ.get("LEME_EMAIL", "vishwasr235@gmail.com")
+PASSWORD = os.environ.get("LEME_PASSWORD", "Vishwasr@2009")
 SERVER_URL = "https://lemehost.com/server/10079641/free-plan"
 LOGIN_URL = "https://lemehost.com/site/login"
 
