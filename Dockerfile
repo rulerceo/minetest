@@ -1,27 +1,24 @@
-# Use a Python image that includes Chrome
 FROM python:3.9-slim
-# ... (rest of the Dockerfile remains the same as before)
-CMD ["gunicorn", "-b", "0.0.0.0:10000", "main:app"]
-# Install Chrome and dependencies
+
+# Install system dependencies and add Google Chrome repo
 RUN apt-get update && apt-get install -y \
     wget \
     gnupg \
-    unzip \
     curl \
-    google-chrome-stable \
+    unzip \
     --no-install-recommends \
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable \
     && rm -rf /var/lib/apt/lists/*
 
-# Set up the working directory
 WORKDIR /app
 
-# Copy your files
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
 COPY . .
 
-
-
-# Install Python requirements
-RUN pip install --no-cache-dir selenium webdriver-manager
-
-# Start the script
-CMD ["python", "main.py"]
+# Render uses port 10000 by default for web services
+CMD ["gunicorn", "-b", "0.0.0.0:10000", "main:app"]
